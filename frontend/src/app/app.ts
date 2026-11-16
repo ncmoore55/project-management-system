@@ -120,4 +120,29 @@ export class App implements OnInit {
       }
     });
   }
+  deleteProject(project: Project): void {
+    if (project.id === undefined) {
+      return;
+    }
+
+    const confirmed = confirm(
+      `Are you sure you want to delete "${project.name}"?`
+    );
+
+    if (!confirmed) {
+      return;
+    }
+
+    this.projectService.deleteProject(project.id).subscribe({
+      next: () => {
+        this.loadProjects();
+        alert('Project deleted successfully!');
+      },
+      error: (error) => {
+        console.error('Error deleting project:', error);
+        alert('Failed to delete project.');
+      }
+    });
+  }
+
 }
