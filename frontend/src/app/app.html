@@ -1,4 +1,3 @@
-
 <div class="container">
 
   <!-- Dashboard Header -->
@@ -12,70 +11,83 @@
 
   <!-- Dashboard Statistics -->
   <section class="stats-grid">
+
     <div class="stat-card">
       <p>Total Projects</p>
-      <h2>2</h2>
+      <h2>{{ projects.length }}</h2>
     </div>
 
     <div class="stat-card">
       <p>In Progress</p>
-      <h2>1</h2>
+      <h2>{{ inProgressCount }}</h2>
     </div>
 
     <div class="stat-card">
       <p>Completed</p>
-      <h2>1</h2>
+      <h2>{{ completedCount }}</h2>
     </div>
+
   </section>
+
 
   <!-- Add Project Form -->
   <section class="project-form">
     <h2>Create New Project</h2>
 
-    <input type="text" placeholder="Project Name">
+    <input
+      type="text"
+      placeholder="Project Name"
+      [(ngModel)]="newProject.name"
+    >
 
-    <textarea placeholder="Project Description"></textarea>
+    <textarea
+      placeholder="Project Description"
+      [(ngModel)]="newProject.description"
+    ></textarea>
 
-    <select>
+    <select [(ngModel)]="newProject.status">
       <option>Not Started</option>
       <option>In Progress</option>
       <option>Completed</option>
     </select>
 
-    <button>Add Project</button>
+    <button (click)="addProject()">Add Project</button>
   </section>
 
-  <!-- Project List -->
+  <!-- Real Project List -->
   <section class="project-list">
+
     <h2>My Projects</h2>
 
-    <div class="project-card">
-      <div class="project-card-header">
-        <h3>My First Java Project</h3>
-        <span class="status-badge">In Progress</span>
-      </div>
+    @if (projects.length === 0) {
+    <p>No projects yet. Create your first project!</p>
+    }
 
-      <p>Building my first full-stack application.</p>
-
-      <div class="project-actions">
-        <button>Edit</button>
-        <button class="delete-btn">Delete</button>
-      </div>
-    </div>
+    @for (project of projects; track project.id) {
 
     <div class="project-card">
+
       <div class="project-card-header">
-        <h3>Portfolio Website</h3>
-        <span class="status-badge completed">Completed</span>
+        <h3>{{ project.name }}</h3>
+
+        <span class="status-badge"
+              [class.completed]="project.status === 'Completed'">
+            {{ project.status }}
+          </span>
       </div>
 
-      <p>Creating my personal developer portfolio.</p>
+      <p>{{ project.description }}</p>
 
       <div class="project-actions">
-        <button>Edit</button>
+        <button (click)="editProject(project)">Edit</button>
         <button class="delete-btn">Delete</button>
       </div>
+
     </div>
+
+    }
+
   </section>
 
 </div>
+
